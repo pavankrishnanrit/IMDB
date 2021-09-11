@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:imdb/utils/text.dart';
+import 'package:imdb/widgets/topRated.dart';
+import 'package:imdb/widgets/trending.dart';
+import 'package:imdb/widgets/tv.dart';
 import 'package:tmdb_api/tmdb_api.dart';
-// @dart=2.9
 
 void main() => runApp(new MyApp());
 
@@ -45,19 +47,39 @@ class _HomeState extends State<Home> {
     Map trendingResult = await tmdbWithCustomLogs.v3.trending.getTrending();
     Map topRatedResult = await tmdbWithCustomLogs.v3.movies.getTopRated();
     Map tvResult = await tmdbWithCustomLogs.v3.tv.getPouplar();
+    print(tvResult);
     print(trendingResult);
     setState(() {
       trendingMovies = trendingResult['results'];
-      topRatedMovies = topRatedResult['result'];
-      tv = tvResult['result'];
+      topRatedMovies = topRatedResult['results'];
+      tv = tvResult['results'];
     });
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-      title: Text('IMDB'),
-    ));
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: modified_text(
+          text: 'IMDB 🍿',
+          color: Colors.white,
+          size: 25,
+        ),
+      ),
+      body: ListView(
+        children: [
+          TV(
+            tv: tv,
+          ),
+          TrendingMovies(
+            trending: trendingMovies,
+          ),
+          TopRatedMovies(
+            topRated: topRatedMovies,
+          ),
+        ],
+      ),
+    );
   }
 }

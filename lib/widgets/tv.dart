@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:imdb/utils/text.dart';
+import 'package:imdb/widgets/tvDesc.dart';
+
 import '../description.dart';
 
-class TrendingMovies extends StatelessWidget {
-  final List trending;
-  const TrendingMovies({Key? key, required this.trending}) : super(key: key);
+class TV extends StatelessWidget {
+  final List tv;
+  const TV({Key? key, required this.tv}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,55 +14,58 @@ class TrendingMovies extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          modified_text(color: Colors.white, size: 26, text: 'Trending Movies'),
+          modified_text(
+              color: Colors.white, size: 26, text: 'Popular TV Shows'),
           SizedBox(
             height: 10,
           ),
           Container(
-            height: 270,
+            height: 200,
             child: ListView.builder(
-                itemCount: trending.length,
                 scrollDirection: Axis.horizontal,
+                itemCount: 11,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Description(
-                                    name: trending[index]['title'],
+                              builder: (context) => TVDesc(
+                                    name: tv[index]['original_name'],
                                     bannerUrl:
                                         'https://image.tmdb.org/t/p/w500' +
-                                            trending[index]['backdrop_path'],
-                                    posterUrl:
-                                        'https://image.tmdb.org/t/p/w500' +
-                                            trending[index]['poster_path'],
-                                    description: trending[index]['overview'],
-                                    vote: trending[index]['vote_average']
-                                        .toString(),
-                                    launchOn: trending[index]['release_date'],
+                                            tv[index]['backdrop_path'],
+                                    description: tv[index]['overview'],
+                                    vote: tv[index]['vote_average'].toString(),
+                                    launchOn: tv[index]['first_air_date'],
                                   )));
                     },
-                    child: trending[index]['title'] != null
+                    child: tv[index]['original_name'] != null
                         ? Container(
-                            width: 140,
+                            padding: EdgeInsets.all(5),
+                            width: 250,
                             child: Column(
                               children: [
                                 Container(
-                                  height: 200,
+                                  height: 140,
+                                  width: 250,
                                   decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
                                       image: NetworkImage(
                                           'https://image.tmdb.org/t/p/w500' +
-                                              trending[index]['poster_path']),
+                                              tv[index]['backdrop_path']),
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 5),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Container(
                                   child: modified_text(
-                                    text: trending[index]['title'] != null
-                                        ? trending[index]['title']
+                                    text: tv[index]['original_name'] != null
+                                        ? tv[index]['original_name']
                                         : 'Loading',
                                     color: Colors.white,
                                     size: 15,
